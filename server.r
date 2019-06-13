@@ -1,4 +1,6 @@
 library(shiny)
+library(ggplot2)
+library(Cairo);options(shiny.usecairo=TRUE)
 
 options(warn=-1)
 
@@ -106,7 +108,11 @@ server <- function(session, input, output) {
     }else{
       objGrowth <- c(storageAmount*objPerGB,diff((storageAmount + (growthGB)*(1:n-1)) * objPerGB))
     }
-    objGrowth * standardPUT
+    if(is.na(objGrowth)==F){
+      objGrowth * standardPUT
+    }else{
+      0
+    }
   }
   
   calculateDataRetrievalCosts <- function(storageAmount,retrievalAmount,n,unitType1,unitType2,unitType3,objPerGB){
@@ -118,10 +124,15 @@ server <- function(session, input, output) {
       temp1 <- rep(retrievalGB,n)
       temp2 <- rep(retrievalGB*objPerGB,n) * standardGET
     }
-    calculateDataTransferTier(temp1) + temp2
+    if(is.na(calculateDataTransferTier(temp1) + temp2)==F){
+      calculateDataTransferTier(temp1) + temp2
+    }else{
+      0
+    }
+    
   }
   
-  headers <- c("Month","Storage Amount","Storage Cost","Upload Cost","Data Retrieval Cost")#,"Monthly Cost","Cumulative Total")
+  headers <- c("Month","Storage Amount","Storage Cost","Upload Cost","Data Retrieval Cost","Monthly Cost","Cumulative Total")
   
   dataVals <- reactiveValues(df=NULL)
   observe({
@@ -145,9 +156,13 @@ server <- function(session, input, output) {
     
     vals$stdStorageAmount <- convertBack(calculateStdStorageAmount(vals$stdA,vals$stdB,vals$stdG))
     vals$stdStorageCost <- calculateStdStorageCosts(vals$stdA,vals$stdB,vals$stdG)
-    vals$stdUploadCost <- calculateGrowthObj(vals$stdA,vals$stdF,vals$stdH,vals$stdObjPerGB,vals$stdG)
+    vals$stdUploadCost <- calculateGrowthObj(vals$stdStorageGB,vals$stdF,vals$stdH,vals$stdObjPerGB,vals$stdG)
     vals$stdDataTransferCost <- calculateDataRetrievalCosts(vals$stdA,vals$stdD,vals$stdH,vals$stdB,vals$stdE,vals$stdG,vals$stdObjPerGB)
-    vals$stdTempDf <- data.frame(vals$stdMonths,vals$stdStorageAmount,vals$stdStorageCost,vals$stdUploadCost,vals$stdDataTransferCost)
+    
+    vals$stdMonthlyCost <- vals$stdStorageCost + vals$stdUploadCost + vals$stdDataTransferCost
+    vals$stdCumulativeCost <- cumsum(vals$stdMonthlyCost)
+    
+    vals$stdTempDf <- data.frame(vals$stdMonths,vals$stdStorageAmount,vals$stdStorageCost,vals$stdUploadCost,vals$stdDataTransferCost,vals$stdMonthlyCost,vals$stdCumulativeCost)
     
     vals$IAA <- gsub("[^0-9.-]","",input$IAStorage)
     vals$IAB <- input$IAUnit1
@@ -203,6 +218,7 @@ server <- function(session, input, output) {
     updateTextInput(session,"stdObj",value="0")
     updateTextInput(session,"stdRetrieval",value="0")
     updateTextInput(session,"stdGrowth",value="0")
+    updateSliderInput(session,"stdMonths",value=3)
   })
   
   observeEvent(input$clr2, {
@@ -233,17 +249,22 @@ server <- function(session, input, output) {
     updateTextInput(session,"DAGrowth",value="0")
   })
   
-  output$stdTest1 <- renderTable({
-    names(vals$stdTempDf) <- headers
-    vals$stdTempDf
-  },align='c')
-  
-  output$stdTest2 <- renderTable({
+  output$stdPlot <- renderPlot({
+    
+    qplot(xlab="\nMonth",ylab="Total Cost ($)\n")+
+      geom_line(aes(x=c(1:vals$stdH),y=vals$stdStorageCost,color='Storage Cost'),size=I(2))+
+      geom_line(aes(x=c(1:vals$stdH),y=vals$stdUploadCost,color='Upload Cost'),size=I(2))+
+      geom_line(aes(x=c(1:vals$stdH),vals$stdDataTransferCost,color='Data Transfer Cost'),size=I(2))+
+      scale_x_continuous(breaks=seq(1,vals$stdH,by=1))+
+      theme(text=element_text(size=15))+
+      scale_color_manual(values=c("Storage Cost"="royalblue4","Upload Cost"="orangered3","Data Transfer Cost"="green4"))+
+      labs(color='')
     
   })
   
-  output$stdTest3 <- renderPlot({
-    #plot(calculateStdStorageCosts(vals$stdA,vals$stdG))
-  })
+  output$stdTable <- renderTable({
+    names(vals$stdTempDf) <- headers
+    vals$stdTempDf
+  },align='c')
   
 }
