@@ -1,8 +1,10 @@
 library(shiny)
+library(ggplot2)
 
 options(warn=-1)
 
 ui <- fluidPage(
+  #shinythemes::themeSelector(),
   titlePanel("S3 Cost Calculator"),
   
   tabsetPanel(type="tab",
@@ -60,9 +62,8 @@ ui <- fluidPage(
                            )
                          ),
                          mainPanel(
-                           tableOutput("stdTest1"),
-                           tableOutput("stdTest2"),
-                           plotOutput("stdTest3")
+                           plotOutput("stdPlot",width="80%"),
+                           tableOutput("stdTable")
                          )
                        )
               ),
