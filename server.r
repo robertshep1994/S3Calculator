@@ -682,7 +682,7 @@ server <- function(session, input, output) {
   
   output$compPlotStorage <- renderPlot({
     
-    qplot(xlab="\nMonth",ylab="Total Cost ($)\n")+
+    qplot(xlab="\nMonth",ylab="Cumulative Cost ($)\n")+
       geom_line(aes(x=c(1:vals$compMonths),y=vals$compStdStorageCumulative,color='Standard'),size=I(2))+
       geom_line(aes(x=c(1:vals$compMonths),y=vals$compIAStorageCumulative,color='Infrequent Access'),size=I(2))+
       geom_line(aes(x=c(1:vals$compMonths),y=vals$compOIAStorageCumulative,color='One Zone-IA'),size=I(2))+
@@ -704,7 +704,7 @@ server <- function(session, input, output) {
   
   output$compPlotUpload <- renderPlot({
     
-    qplot(xlab="\nMonth",ylab="Total Cost ($)\n")+
+    qplot(xlab="\nMonth",ylab="Cumulative Cost ($)\n")+
       geom_line(aes(x=c(1:vals$compMonths),y=vals$compStdUploadCumulative,color='Standard'),size=I(2))+
       geom_line(aes(x=c(1:vals$compMonths),y=vals$compIAUploadCumulative,color='Infrequent Access'),size=I(2))+
       geom_line(aes(x=c(1:vals$compMonths),y=vals$compOIAUploadCumulative,color='One Zone-IA'),size=I(2))+
@@ -726,7 +726,7 @@ server <- function(session, input, output) {
   
   output$compPlotDataRetrieval <- renderPlot({
     
-    qplot(xlab="\nMonth",ylab="Total Cost ($)\n")+
+    qplot(xlab="\nMonth",ylab="Cumulative Cost ($)\n")+
       geom_line(aes(x=c(1:vals$compMonths),y=vals$compStdDataTransferCumulative,color='Standard'),size=I(2))+
       geom_line(aes(x=c(1:vals$compMonths),y=vals$compIADataTransferCumulative,color='Infrequent Access'),size=I(2))+
       geom_line(aes(x=c(1:vals$compMonths),y=vals$compOIADataTransferCumulative,color='One Zone-IA'),size=I(2))+
@@ -748,7 +748,7 @@ server <- function(session, input, output) {
   
   output$compPlotTotals <- renderPlot({
     
-    qplot(xlab="\nMonth",ylab="Total Cost ($)\n")+
+    qplot(xlab="\nMonth",ylab="Cumulative Cost ($)\n")+
       geom_line(aes(x=c(1:vals$compMonths),y=vals$compStdCumulative,color='Standard'),size=I(2))+
       geom_line(aes(x=c(1:vals$compMonths),y=vals$compIACumulative,color='Infrequent Access'),size=I(2))+
       geom_line(aes(x=c(1:vals$compMonths),y=vals$compOIACumulative,color='One Zone-IA'),size=I(2))+
