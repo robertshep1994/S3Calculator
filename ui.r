@@ -51,18 +51,25 @@ ui <- fluidPage(
                                                 choices = c("GB","TB","PB","%"), selected = "GB",width="65px")
                              )
                            ),
-                           actionButton("calc1","Submit"),
-                           actionButton("clr1","Clear"),
-                           br(),br(),br(),
                            fluidRow(column(8,align="center",h4("Months to View") )),
                            fluidRow(
                              column(8,align="center",
                                     sliderInput('stdMonths',NULL,min=3,max=36,value=3)
                              )
-                           )
+                           ),
+                           fluidRow(column(12, h4("Copy Inputs Into:") )),
+                           fluidRow(
+                             column(5, selectInput("copySelect1", NULL,
+                                                   choices = c("All","Infrequent Access","One Zone-IA","Glacier","Glacier-Deep Archive"),width="225px")
+                             ),
+                             column(6, actionButton("copy1","Copy",width="65px")
+                             )
+                             
+                           ),
+                           actionButton("clr1","Clear")
                          ),
                          mainPanel(
-                           plotOutput("stdPlot",width="80%"),
+                           plotOutput("stdPlot",width="80%"),br(),
                            tableOutput("stdTable")
                          )
                        )
@@ -110,22 +117,26 @@ ui <- fluidPage(
                                                 choices = c("GB","TB","PB","%"), selected = "GB",width="65px")
                              )
                            ),
-                           actionButton("calc2","Submit"),
-                           actionButton("clr2","Clear"),
-                           br(),br(),br(),
                            fluidRow(column(8,align="center",h4("Months to View") )),
                            fluidRow(
                              column(8,align="center",
                                     sliderInput('IAMonths',NULL,min=3,max=36,value=3)
                              )
-                           )
+                           ),
+                           fluidRow(column(12, h4("Copy Inputs Into:") )),
+                           fluidRow(
+                             column(5, selectInput("copySelect2", NULL,
+                                                   choices = c("All","Standard","One Zone-IA","Glacier","Glacier-Deep Archive"),width="225px")
+                             ),
+                             column(6, actionButton("copy2","Copy",width="65px")
+                             )
+                             
+                           ),
+                           actionButton("clr2","Clear")
                          ),
                          mainPanel(
-                           fluidRow(
-                             column(7,
-                                    textOutput("IATEST")
-                             )
-                           )
+                           plotOutput("IAPlot",width="80%"),br(),
+                           tableOutput("IATable")
                          )
                        )
               ),
@@ -171,22 +182,26 @@ ui <- fluidPage(
                                                 choices = c("GB","TB","PB","%"), selected = "GB",width="65px")
                              )
                            ),
-                           actionButton("calc3","Submit"),
-                           actionButton("clr3","Clear"),
-                           br(),br(),br(),
                            fluidRow(column(8,align="center",h4("Months to View") )),
                            fluidRow(
                              column(8,align="center",
                                     sliderInput('OIAMonths',NULL,min=3,max=36,value=3)
                              )
-                           )
+                           ),
+                           fluidRow(column(12, h4("Copy Inputs Into:") )),
+                           fluidRow(
+                             column(5, selectInput("copySelect3", NULL,
+                                                   choices = c("All","Standard","Infrequent Access","Glacier","Glacier-Deep Archive"),width="225px")
+                             ),
+                             column(6, actionButton("copy3","Copy",width="65px")
+                             )
+                             
+                           ),
+                           actionButton("clr3","Clear")
                          ),
                          mainPanel(
-                           fluidRow(
-                             column(7,
-                                    textOutput("OIATEST")
-                             )
-                           )
+                           plotOutput("OIAPlot",width="80%"),br(),
+                           tableOutput("OIATable")
                          )
                        )
               ),
@@ -239,22 +254,26 @@ ui <- fluidPage(
                                                 choices = c("GB","TB","PB","%"), selected = "GB",width="65px")
                              )
                            ),
-                           actionButton("calc4","Submit"),
-                           actionButton("clr4","Clear"),
-                           br(),br(),br(),
                            fluidRow(column(8,align="center",h4("Months to View") )),
                            fluidRow(
                              column(8,align="center",
                                     sliderInput('glacierMonths',NULL,min=3,max=36,value=3)
                              )
-                           )
+                           ),
+                           fluidRow(column(12, h4("Copy Inputs Into:") )),
+                           fluidRow(
+                             column(5, selectInput("copySelect4", NULL,
+                                                   choices = c("All","Standard","Infrequent Access","One Zone-IA","Glacier-Deep Archive"),width="225px")
+                             ),
+                             column(6, actionButton("copy4","Copy",width="65px")
+                             )
+                             
+                           ),
+                           actionButton("clr4","Clear")
                          ),
                          mainPanel(
-                           fluidRow(
-                             column(7,
-                                    textOutput("glacierTEST")
-                             )
-                           )
+                           plotOutput("glacierPlot",width="80%"),br(),
+                           tableOutput("glacierTable")
                          )
                        )
               ),
@@ -307,48 +326,52 @@ ui <- fluidPage(
                                                 choices = c("GB","TB","PB","%"), selected = "GB",width="65px")
                              )
                            ),
-                           actionButton("calc5","Submit"),
-                           actionButton("clr5","Clear"),
-                           br(),br(),br(),
                            fluidRow(column(8,align="center",h4("Months to View") )),
                            fluidRow(
                              column(8,align="center",
                                     sliderInput('DAMonths',NULL,min=3,max=36,value=3)
                              )
-                           )
+                           ),
+                           fluidRow(column(12, h4("Copy Inputs Into:") )),
+                           fluidRow(
+                             column(5, selectInput("copySelect5", NULL,
+                                                   choices = c("All","Standard","Infrequent Access","One Zone-IA","Glacier"),width="225px")
+                             ),
+                             column(6, actionButton("copy5","Copy",width="65px")
+                             )
+                             
+                           ),
+                           actionButton("clr5","Clear")
                          ),
                          mainPanel(
-                           fluidRow(
-                             column(7,
-                                    textOutput("DATEST")
-                             )
-                           )
+                           plotOutput("DAPlot",width="80%"),br(),
+                           tableOutput("DATable")
                          )
                        )
               ),
               tabPanel("Storage Class Comparison",br(),
                        
-                       fluidRow(column(3,h3("Plot & Table Options") )),
+                       #fluidRow(column(3,h3("Plot & Table Options") )),
                        
                        sidebarLayout(
                          
                          sidebarPanel(
                            
-                           fluidRow(column(8,align="center",h4("Storage Costs") )),
-                           fluidRow(column(3,actionButton("storageShow","Show") ),
-                                    column(3,actionButton("storageHide","Hide") ),
-                                    column(3,actionButton("storageOnly","Show Only") )
-                           ),br(),
-                           fluidRow(column(8,align="center",h4("Data Upload Costs") )),
-                           fluidRow(column(3,actionButton("uploadShow","Show") ),
-                                    column(3,actionButton("uploadHide","Hide") ),
-                                    column(3,actionButton("uploadOnly","Show Only") )
-                           ),br(),
-                           fluidRow(column(8,align="center",h4("Data Retrieval Costs") )),
-                           fluidRow(column(3,actionButton("retrievalShow","Show") ),
-                                    column(3,actionButton("retrievalHide","Hide") ),
-                                    column(3,actionButton("retrievalOnly","Show Only") )
-                           ),br(),
+                           #fluidRow(column(8,align="center",h4("Storage Costs") )),
+                           #fluidRow(column(3,actionButton("storageShow","Show") ),
+                                    #column(3,actionButton("storageHide","Hide") ),
+                                    #column(3,actionButton("storageOnly","Show Only") )
+                           #),br(),
+                           #fluidRow(column(8,align="center",h4("Data Upload Costs") )),
+                           #fluidRow(column(3,actionButton("uploadShow","Show") ),
+                                    #column(3,actionButton("uploadHide","Hide") ),
+                                    #column(3,actionButton("uploadOnly","Show Only") )
+                           #),br(),
+                           #fluidRow(column(8,align="center",h4("Data Retrieval Costs") )),
+                           #fluidRow(column(3,actionButton("retrievalShow","Show") ),
+                                    #column(3,actionButton("retrievalHide","Hide") ),
+                                    #column(3,actionButton("retrievalOnly","Show Only") )
+                           #),br(),
                            fluidRow(column(8,align="center",h4("Months to View") )),
                            fluidRow(
                              column(8,
@@ -357,9 +380,16 @@ ui <- fluidPage(
                            )
                          ),
                          mainPanel(
+                           tabsetPanel(type = "tab",
+                                       tabPanel("Totals",br(),plotOutput("compPlotTotals",width="80%"),br(),tableOutput("compTableTotals")),
+                                       tabPanel("Storage",br(),plotOutput("compPlotStorage",width="80%"),br(),tableOutput("compTableStorage")),
+                                       tabPanel("Upload",br(),plotOutput("compPlotUpload",width="80%"),br(),tableOutput("compTableUpload")),
+                                       tabPanel("Data Retrieval",br(),plotOutput("compPlotDataRetrieval",width="80%"),br(),tableOutput("compTableDataRetrieval"))
+                                       
                            
                          )
                        )
               )
   )
+)
 )
